@@ -1,25 +1,45 @@
 # SmartSearch
 
-SmartSearch is an advanced search application inspired by PerplexityAI. It leverages Retrieval-Augmented Generation (RAG) to provide accurate and contextually relevant search results.
+SmartSearch is an advanced search application inspired by PerplexityAI. It combines Retrieval-Augmented Generation (RAG) techniques with cutting-edge technologies to deliver precise and context-aware search results.
 
 ## Features
-- **RAG-based Search**: Combines retrieval of relevant documents with generative models to enhance search accuracy.
-- **User-friendly Interface**: Built with React to provide a seamless and interactive user experience.
-- **Robust Backend**: Powered by Django, ensuring a scalable and secure server-side architecture.
+- **RAG-based Search**: Integrates Elasticsearch and SearxNG for document retrieval, paired with OpenAI's API for generating accurate, human-like responses.
+- **Dynamic User Interface**: Built with React to ensure an intuitive and interactive experience.
+- **Flexible Backend Architecture**: Powered by Django, seamlessly coordinating data flow between frontend, retrieval systems, and language models.
+- **Customizable Search Pipelines**: Enhanced by LangChain, enabling easy configuration of RAG workflows to suit diverse use cases.
+
+---
 
 ## Frontend
-- Developed using React, offering a dynamic and responsive user interface.
-- Utilizes modern React hooks and components for efficient state management and rendering.
+- **Tech Stack**: Developed using React with modern hooks and component-based design.
+- **Real-time Updates**: Enables dynamic interaction and instant updates for user queries.
+- **Interactive Design**: Provides a smooth user experience with an emphasis on accessibility and responsiveness.
+
+---
 
 ## Backend
-- Built with Django, a high-level Python web framework that encourages rapid development and clean, pragmatic design.
-- Implements RESTful APIs to handle search queries and manage data flow between the frontend and backend.
+- **Core Framework**: Built with Django for robust and scalable server-side architecture.
+- **Integrated RAG Pipelines**: Utilizes LangChain to connect Elasticsearch and SearxNG with OpenAI's API, forming an optimized retrieval and generation workflow.
+- **API Management**: Implements RESTful APIs to process search queries and return structured, contextually relevant results.
+
+---
+
+## Technologies Used
+- **LangChain**: Streamlines the RAG process with modular and flexible pipelines.
+- **React**: Powers the frontend with efficient state management and rendering.
+- **Django**: Manages backend operations with a focus on scalability and security.
+- **Elasticsearch**: Provides a powerful search and analytics engine for document retrieval.
+- **SearxNG**: Offers meta-search capabilities, aggregating results from various sources.
+- **OpenAI API**: Delivers state-of-the-art natural language generation for accurate and insightful responses.
+
+---
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js and npm installed for the frontend.
-- Python and Django installed for the backend.
+- **Frontend**: Node.js and npm installed.
+- **Backend**: Python (3.8 or higher), Django, and Elasticsearch installed.
+- **Environment Variables**: API keys for OpenAI and SearxNG configured.
 
 ### Installation
 1. Clone the repository:
@@ -30,23 +50,52 @@ SmartSearch is an advanced search application inspired by PerplexityAI. It lever
    ```bash
    cd smartsearch
    ```
-3. Install frontend dependencies:
+3. Set up the frontend:
    ```bash
    cd frontend
    npm install
    ```
-4. Set up the backend:
+4. Configure the backend:
    ```bash
    cd backend
    pip install -r requirements.txt
    ```
 
+5. Configure Elasticsearch and SearxNG:
+   - Start Elasticsearch and ensure it is running.
+   - Set up SearxNG for meta-search integration.
+
+---
+
 ## Usage
-- Run the frontend and backend servers to start using SmartSearch.
-- Access the application via your web browser to perform searches and explore results.
+
+1. **Run Elasticsearch and SearxNG**:
+   - Start Elasticsearch locally or use a managed instance.
+   - Launch SearxNG and configure its API endpoint in the backend.
+
+2. **Start the Backend**:
+   ```bash
+   python manage.py runserver
+   ```
+
+3. **Start the Frontend**:
+   ```bash
+   cd frontend
+   npm start
+   ```
+
+4. **Access the Application**:
+   Open your browser and navigate to `http://localhost:3000` to start using SmartSearch.
+
+---
 
 ## Contributing
-Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
+Contributions are highly encouraged! To contribute:
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Submit a pull request with a clear description of your changes.
+
+---
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**. See the `LICENSE` file for details.
