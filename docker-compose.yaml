@@ -1,0 +1,43 @@
+services:
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    volumes:
+      - ./searxng:/etc/searxng:rw
+    ports:
+      - 4000:8080
+    networks:
+      - smartsearch-network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend.dockerfile
+    volumes:
+      - ./backend:/app
+    environment:
+      - SEARXNG_API_URL=http://searxng:8080
+    depends_on:
+      searxng:
+        condition: service_started
+    ports:
+      - "8000:8000"
+    networks:
+      - smartsearch-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - smartsearch-network
+    restart: unless-stopped
+
+networks:
+  smartsearch-network:
+    driver: bridge
