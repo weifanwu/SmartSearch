@@ -12,13 +12,35 @@ function App() {
     e.preventDefault();
     if (input.trim()) {
       setMessages([...messages, { text: input, isUser: true }]);
-      // Simulate AI response
-      setTimeout(() => {
+      
+    // ... existing code ...
+    fetch(`/api/search?q=${encodeURIComponent(input)}&format=json`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      // Combine all URLs into a single message
+      if (data.results && data.results.length > 0) {
+        const allUrls = data.results.map(result => result.url).join('\n');
         setMessages(prev => [...prev, { 
-          text: "This is a sample AI response.", 
+          text: allUrls, 
           isUser: false 
         }]);
-      }, 1000);
+      } else {
+        setMessages(prev => [...prev, { 
+          text: "No results found.", 
+          isUser: false 
+        }]);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching search results:', error);
+      setMessages(prev => [...prev, { 
+        text: "Error fetching search results.", 
+        isUser: false 
+      }]);
+    });
+    // ... existing code ...
+
       setInput('');
     }
   };
