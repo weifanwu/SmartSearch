@@ -13,34 +13,28 @@ function App() {
     if (input.trim()) {
       setMessages([...messages, { text: input, isUser: true }]);
       
-    // ... existing code ...
-    fetch(`/api/search?q=${encodeURIComponent(input)}&format=json`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-      // Combine all URLs into a single message
-      if (data.results && data.results.length > 0) {
-        const allUrls = data.results.map(result => result.url).join('\n');
-        setMessages(prev => [...prev, { 
-          text: allUrls, 
-          isUser: false 
-        }]);
-      } else {
-        setMessages(prev => [...prev, { 
-          text: "No results found.", 
-          isUser: false 
-        }]);
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching search results:', error);
-      setMessages(prev => [...prev, { 
-        text: "Error fetching search results.", 
-        isUser: false 
-      }]);
-    });
-    // ... existing code ...
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+      console.log(backendUrl);
+      fetch(`${backendUrl}/api/search?query=${encodeURIComponent(input)}`)
+        .then(response => response.json())
+        .then(data => {
+          // Combine answer and citations into a single message
+          const citations = data.results.map(result => result.link).join('\n');
 
+          const combinedMessage = `${data.answer}\n\nCitations:\n${citations}`;
+          setMessages(prev => [...prev, { 
+            text: combinedMessage, 
+            isUser: false 
+          }]);
+        })
+        .catch(error => {
+          console.error('Error fetching search results:', error);
+          setMessages(prev => [...prev, { 
+            text: "Error fetching search results.", 
+            isUser: false 
+          }]);
+        });
+  
       setInput('');
     }
   };
