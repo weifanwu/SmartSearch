@@ -30,6 +30,8 @@ services:
     build:
       context: .
       dockerfile: frontend.dockerfile
+    volumes:
+      - ./frontend:/app
     environment:
         - REACT_APP_BACKEND_URL=http://localhost:8000
     ports:

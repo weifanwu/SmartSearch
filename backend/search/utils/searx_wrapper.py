@@ -10,8 +10,8 @@ class SearxSearchWrapperCustom:
         # Return URLs from search results
         results = self.wrapper.results(query=query, engines=engines, num_results=num_results)
         snippets = [result['snippet'] for result in results if 'snippet' in result]
-        print(snippets)
         return snippets
+
 
     def fetch_webpages(self, urls):
         # Accept a list of URLs and fetch their content

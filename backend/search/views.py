@@ -1,6 +1,6 @@
 import os
 from .utils.searx_wrapper import SearxSearchWrapperCustom
-from django.http import JsonResponse
+from django.http import StreamingHttpResponse
 from langchain.chains.combine_documents.stuff import create_stuff_documents_chain
 from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
@@ -41,11 +41,18 @@ def search_query(request):
         max_tokens=None,
         timeout=None,
         max_retries=2,
-        api_key="YOUR_API_KEY",
+        stream=True,
+        api_key="OPENAI_AI_KEY",
     )
-
+    
     qa_chain = create_stuff_documents_chain(llm=llm, prompt=prompt_template)
 
-    answer = qa_chain.invoke({"context": documents, "question": query})
-    
-    return JsonResponse({"query": query, "answer": answer})
+    def event_stream():
+        for chunk in qa_chain.stream({"context": documents, "question": query}):
+            yield str(chunk)
+
+    response = StreamingHttpResponse(event_stream(), content_type='text/event-stream')
+    response['Cache-Control'] = 'no-cache'
+    # response['Connection'] = 'keep-alive'
+
+    return response
