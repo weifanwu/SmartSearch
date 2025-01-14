@@ -21,16 +21,14 @@ def search_query(request):
     # todo: make sure use local env to store openai_key
     # OPENAI_API_KEY = get_secret('openai_key')
     searx_wrapper = SearxSearchWrapperCustom(host=searx_api_url)
-    urls = searx_wrapper.search(query=query, engines=["bing", "brave", "duckduckgo"], num_results=5)
-    
-    html_contents = searx_wrapper.fetch_webpages(urls)
-    extracted_contents = [searx_wrapper.extract_article_content(html) for html in html_contents]
+    snippets = searx_wrapper.search(query=query, engines=["brave"], num_results=5)
+    # html_contents = searx_wrapper.fetch_webpages(urls)
+    # extracted_contents = [searx_wrapper.extract_article_content(html) for html in html_contents]
     documents = [
         Document(
-            page_content=content,
-            metadata={"url": url}
+            page_content=str(snippet),
         )
-        for content, url in zip(extracted_contents, urls)
+        for snippet in snippets
     ]
     prompt_template = PromptTemplate(
         input_variables=["context", "question"],
@@ -43,11 +41,11 @@ def search_query(request):
         max_tokens=None,
         timeout=None,
         max_retries=2,
-        api_key="YOUR_OPENAI_KEY",
+        api_key="YOUR_API_KEY",
     )
 
     qa_chain = create_stuff_documents_chain(llm=llm, prompt=prompt_template)
 
     answer = qa_chain.invoke({"context": documents, "question": query})
     
-    return JsonResponse({"query": query, "answer": answer, "results": {"content": extracted_contents, "urls": urls}})
+    return JsonResponse({"query": query, "answer": answer})

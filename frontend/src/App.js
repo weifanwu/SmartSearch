@@ -13,15 +13,11 @@ function App() {
     if (input.trim()) {
       setMessages([...messages, { text: input, isUser: true }]);
       
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
-      console.log(backendUrl);
+      const backendUrl = 'http://localhost:8000';
       fetch(`${backendUrl}/api/search?query=${encodeURIComponent(input)}`)
         .then(response => response.json())
         .then(data => {
-          // Combine answer and citations into a single message
-          const citations = data.results.map(result => result.link).join('\n');
-
-          const combinedMessage = `${data.answer}\n\nCitations:\n${citations}`;
+          const combinedMessage = `${data.answer}\n`;
           setMessages(prev => [...prev, { 
             text: combinedMessage, 
             isUser: false 

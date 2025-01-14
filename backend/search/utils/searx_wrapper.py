@@ -9,8 +9,9 @@ class SearxSearchWrapperCustom:
     def search(self, query, engines=None, num_results=7):
         # Return URLs from search results
         results = self.wrapper.results(query=query, engines=engines, num_results=num_results)
-        urls = [result['link'] for result in results if 'link' in result]
-        return urls
+        snippets = [result['snippet'] for result in results if 'snippet' in result]
+        print(snippets)
+        return snippets
 
     def fetch_webpages(self, urls):
         # Accept a list of URLs and fetch their content
@@ -23,10 +24,11 @@ class SearxSearchWrapperCustom:
             if response.status_code == 200:
                 contents.append(response.content)
             else:
-                contents.append("no found")
+                contents.append(response.status_code)
         return contents
 
     def extract_article_content(self, html):
+        print(html)
         soup = BeautifulSoup(html, "html.parser")
         article = soup.find("article")  # 选择目标元素
         return article.get_text(strip=True) if article else "Content not found"
