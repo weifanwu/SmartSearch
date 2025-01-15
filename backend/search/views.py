@@ -42,17 +42,17 @@ def search_query(request):
         timeout=None,
         max_retries=2,
         stream=True,
-        api_key="OPENAI_AI_KEY",
+        api_key="OPENAI_API_KEY",
     )
     
     qa_chain = create_stuff_documents_chain(llm=llm, prompt=prompt_template)
 
     def event_stream():
+        yield "event: message\n\n"
         for chunk in qa_chain.stream({"context": documents, "question": query}):
-            yield str(chunk)
+            yield f"data: {str(chunk)}\n\n"
 
     response = StreamingHttpResponse(event_stream(), content_type='text/event-stream')
     response['Cache-Control'] = 'no-cache'
-    # response['Connection'] = 'keep-alive'
 
     return response
